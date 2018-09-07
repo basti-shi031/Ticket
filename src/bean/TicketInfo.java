@@ -11,6 +11,15 @@ public class TicketInfo {
     Date transactionDate;//处理日期
 
     String picPath;//文件路径
+    String qrCodePath;//二维码路径
+
+    public String getQrCodePath() {
+        return qrCodePath;
+    }
+
+    public void setQrCodePath(String qrCodePath) {
+        this.qrCodePath = qrCodePath;
+    }
 
     public String getCode() {
         return code;
