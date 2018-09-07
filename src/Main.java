@@ -76,6 +76,19 @@ public class Main {
                     String content = QRUtil.parseQR(qrCodePath);
                     //根据解析完的信息，得到ticketInfo实例
                     TicketInfo ticketInfo = TicketInfoManager.parseTicketInfo(content, ticketImg.getAbsolutePath(), qrCodePath);
+                    if (ticketInfo == null) {
+                        JOptionPane.showMessageDialog(null,"二维码解析错误，暂时不对此张发票进行操作，点击确定操作下一张","错误" ,JOptionPane.ERROR_MESSAGE);
+                        index++;
+                        if (index >= ticketImages.length) {
+                            JOptionPane.showMessageDialog(null, "完成", "完成", JOptionPane.INFORMATION_MESSAGE);
+                            System.exit(0);
+                        } else {
+                            ImageIcon icon = new ImageIcon(ticketImages[index].getAbsolutePath());
+                            icon = new ImageIcon(icon.getImage().getScaledInstance(1000, 500, Image.SCALE_DEFAULT));
+                            ticketImageView.setIcon(icon);
+                        }
+                        return ;
+                    }
                     ticketInfo.setTransactionDate(transactionDate);
 
                     //得到该实例后，根据其code 和 number 访问数据库，如果数据库中不存在，则入库，否则返回库内原有数据
@@ -103,7 +116,7 @@ public class Main {
 
                     index++;
                     if (index >= ticketImages.length) {
-                        JOptionPane.showMessageDialog(null, "完成", "完成", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "完成", "完成", JOptionPane.INFORMATION_MESSAGE);
                         System.exit(0);
                     } else {
                         ImageIcon icon = new ImageIcon(ticketImages[index].getAbsolutePath());
@@ -113,6 +126,8 @@ public class Main {
 
                 } catch (ParseException e1) {
                     e1.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "请输入如20180101格式的日期", "日期错误", JOptionPane.ERROR_MESSAGE);
+
                 }
             }
         });
